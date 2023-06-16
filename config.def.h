@@ -108,6 +108,7 @@ static const Key keys[] = {
 	{0,								XK_F2,   		        spawn,	SHCMD("~/.local/bin/volume decr")},
 	{0,								XF86XK_MonBrightnessUp,  	spawn,	SHCMD("~/.local/bin/shine incr")},
 	{0,								XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
+	{ MODKEY,							XK_v,				spawn,	SHCMD("copyq menu")},
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY,						XK_r,      quit,           {1} }, 
 };
