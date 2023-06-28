@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 5;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -46,6 +46,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define ALTKEY Mod1Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -60,9 +61,11 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+#include <X11/XF86keysym.h>
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_p,         spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -73,7 +76,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+	{ ALTKEY,             			XK_F4,     killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -95,7 +98,19 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+	{0,								XF86XK_AudioRaiseVolume,	spawn,	SHCMD("~/.local/bin/volume incr")},
+	{0,								XF86XK_AudioLowerVolume,	spawn,	SHCMD("~/.local/bin/volume decr")},
+	{0,								XF86XK_AudioMute,		spawn,	SHCMD("~/.local/bin/volume tmute")},
+	{0,								XK_F5,				spawn,	SHCMD("~/.local/bin/shine incr")},
+	{0,								XK_F4,				spawn,	SHCMD("~/.local/bin/shine decr")},
+	{0,								XK_F1,   		        spawn,	SHCMD("~/.local/bin/volume tmute")},
+	{0,								XK_F3,   		        spawn,	SHCMD("~/.local/bin/volume incr")},
+	{0,								XK_F2,   		        spawn,	SHCMD("~/.local/bin/volume decr")},
+	{0,								XF86XK_MonBrightnessUp,  	spawn,	SHCMD("~/.local/bin/shine incr")},
+	{0,								XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
+	{ MODKEY,							XK_v,				spawn,	SHCMD("copyq menu")},
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY,						XK_r,      quit,           {1} }, 
 };
 
 /* button definitions */

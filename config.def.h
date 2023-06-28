@@ -56,16 +56,20 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
+#define STATUSBAR "dwmblocks"
+
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static void sigstatusbar(const Arg *arg);
+
 
 #include <X11/XF86keysym.h>
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,         spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -98,19 +102,20 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{0,								XF86XK_AudioRaiseVolume,	spawn,	SHCMD("~/.local/bin/volume incr")},
-	{0,								XF86XK_AudioLowerVolume,	spawn,	SHCMD("~/.local/bin/volume decr")},
-	{0,								XF86XK_AudioMute,		spawn,	SHCMD("~/.local/bin/volume tmute")},
-	{0,								XK_F5,				spawn,	SHCMD("~/.local/bin/shine incr")},
-	{0,								XK_F4,				spawn,	SHCMD("~/.local/bin/shine decr")},
-	{0,								XK_F1,   		        spawn,	SHCMD("~/.local/bin/volume tmute")},
-	{0,								XK_F3,   		        spawn,	SHCMD("~/.local/bin/volume incr")},
-	{0,								XK_F2,   		        spawn,	SHCMD("~/.local/bin/volume decr")},
-	{0,								XF86XK_MonBrightnessUp,  	spawn,	SHCMD("~/.local/bin/shine incr")},
-	{0,								XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
-	{ MODKEY,							XK_v,				spawn,	SHCMD("copyq menu")},
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY,						XK_r,      quit,           {1} }, 
+	{0,				XF86XK_AudioRaiseVolume,	spawn,	SHCMD("~/.local/bin/volume incr")},
+	{0,				XF86XK_AudioLowerVolume,	spawn,	SHCMD("~/.local/bin/volume decr")},
+	{0,				XF86XK_AudioMute,		spawn,	SHCMD("~/.local/bin/volume tmute")},
+	{0,				XK_F5,				spawn,	SHCMD("~/.local/bin/shine incr")},
+	{0,				XK_F4,				spawn,	SHCMD("~/.local/bin/shine decr")},
+	{0,				XK_F1,   		        spawn,	SHCMD("~/.local/bin/volume tmute")},
+	{0,				XK_F3,   		        spawn,	SHCMD("~/.local/bin/volume incr")},
+	{0,				XK_F2,   		        spawn,	SHCMD("~/.local/bin/volume decr")},
+	{0,				XF86XK_MonBrightnessUp,  	spawn,	SHCMD("~/.local/bin/shine incr")},
+	{0,				XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
+	{ MODKEY,			XK_v,				spawn,	SHCMD("copyq menu")},
+	{ MODKEY,			XK_z,				spawn,	SHCMD("rofi -show drun")},
+	{ MODKEY|ShiftMask,             XK_q,      			quit,           {0} },
+	{ MODKEY,			XK_r,      quit,           {1} }, 
 };
 
 /* button definitions */
@@ -120,7 +125,9 @@ static const Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigstatusbar,   {.i = 1} },
+	{ ClkStatusText,        0,              Button2,        sigstatusbar,   {.i = 2} },
+	{ ClkStatusText,        0,              Button3,        sigstatusbar,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
