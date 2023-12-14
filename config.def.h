@@ -14,6 +14,8 @@ static char normfgcolor[]           = "#bbbbbb";
 static char selfgcolor[]            = "#eeeeee";
 static char selbordercolor[]        = "#005577";
 static char selbgcolor[]            = "#005577";
+static const unsigned int baralpha = 0xd0;
+static const unsigned int borderalpha = OPAQUE;
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -72,6 +74,7 @@ static const char *termcmd[]  = { "st", NULL };
 static void sigstatusbar(const Arg *arg);
 static const char *browsercmd[]     = { "google-chrome-stable",          NULL };
 static const char *fileman[]				= { "nemo",					NULL };
+static const char *chatapp[]        = { "telegram-desktop",				NULL};
 
 
 #include <X11/XF86keysym.h>
@@ -79,6 +82,7 @@ static const char *fileman[]				= { "nemo",					NULL };
 static const Key keys[] = {
 	{MODKEY,		       XK_w,      	spawn,      {.v = browsercmd} },
 	{MODKEY,					 XK_f,				spawn,			{.v = fileman}	},
+	{MODKEY,					 XK_t,				spawn,			{.v = chatapp}  },
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,	                XK_Return, spawn,          {.v = termcmd } },
