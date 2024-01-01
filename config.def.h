@@ -129,8 +129,9 @@ static const Key keys[] = {
 	{0,				XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
 	{ MODKEY,	XK_v,				spawn,	SHCMD("copyq menu")},
 	{ MODKEY,	XK_z,				spawn,	SHCMD("rofi -show drun")},
-	{ 0,			XK_F9,				spawn,	SHCMD("betterlockscreen -l blur")},
-
+	{ 0,			XK_F9,			spawn,	SHCMD("betterlockscreen -l blur")},
+	{ 0,			XK_Print,		spawn,	SHCMD("~/.local/bin/screenshot fullsave")},
+	{ MODKEY|ShiftMask,		XK_s,		spawn,	SHCMD("~/.local/bin/screenshot selectsave")},
 	{ MODKEY|ShiftMask,             XK_q,      			quit,           {0} },
 	{ MODKEY,			XK_r,      quit,           {1} }, 
 };
