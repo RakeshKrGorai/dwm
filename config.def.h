@@ -73,6 +73,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *termcmd[]  = { "st", NULL };
 static void sigstatusbar(const Arg *arg);
 static const char *browsercmd[]     = { "google-chrome-stable",          NULL };
+static const char *bravebrowser[]   = { "brave-browser-nightly",					NULL};
 static const char *fileman[]				= { "nemo",					NULL };
 static const char *chatapp[]        = { "telegram-desktop",				NULL};
 
@@ -81,6 +82,7 @@ static const char *chatapp[]        = { "telegram-desktop",				NULL};
 
 static const Key keys[] = {
 	{MODKEY,		       XK_w,      	spawn,      {.v = browsercmd} },
+	{MODKEY|ShiftMask,		       XK_w,      	spawn,      {.v = bravebrowser} },
 	{MODKEY,					 XK_f,				spawn,			{.v = fileman}	},
 	{MODKEY,					 XK_t,				spawn,			{.v = chatapp}  },
 	/* modifier                     key        function        argument */
