@@ -8,17 +8,18 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]				=  { "FiraCode Nerd Font:style:bold:size=10","Noto Sans Mono CJK JP:style=SemiBold:size=10", "emoji:size-10" };
 static const char dmenufont[]			= "FiraCode Nerd Font:style:bold:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static char normbgcolor[]           = "#222222";
+static char normbordercolor[]       = "#444444";
+static char normfgcolor[]           = "#bbbbbb";
+static char selfgcolor[]            = "#eeeeee";
+static char selbordercolor[]        = "#005577";
+static char selbgcolor[]            = "#005577";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
-static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+static char *colors[][3] = {
+       /*               fg           bg           border   */
+       [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
+       [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 static const unsigned int alphas[][3]      = {
     /*               fg      bg        border*/
@@ -68,18 +69,22 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL }; 
 static const char *termcmd[]  = { "st", NULL };
 static void sigstatusbar(const Arg *arg);
 static const char *browsercmd[]     = { "google-chrome-stable",          NULL };
+static const char *bravebrowser[]   = { "brave-browser-nightly",					NULL};
 static const char *fileman[]				= { "nemo",					NULL };
+static const char *chatapp[]        = { "telegram-desktop",				NULL};
 
 
 #include <X11/XF86keysym.h>
 
 static const Key keys[] = {
 	{MODKEY,		       XK_w,      	spawn,      {.v = browsercmd} },
+	{MODKEY|ShiftMask,		       XK_w,      	spawn,      {.v = bravebrowser} },
 	{MODKEY,					 XK_f,				spawn,			{.v = fileman}	},
+	{MODKEY,					 XK_t,				spawn,			{.v = chatapp}  },
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,	                XK_Return, spawn,          {.v = termcmd } },
@@ -104,6 +109,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_F5,     xrdb,           {.v = NULL } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -125,8 +131,9 @@ static const Key keys[] = {
 	{0,				XF86XK_MonBrightnessDown, 	spawn,	SHCMD("~/.local/bin/shine decr")},
 	{ MODKEY,	XK_v,				spawn,	SHCMD("copyq menu")},
 	{ MODKEY,	XK_z,				spawn,	SHCMD("rofi -show drun")},
-	{ 0,			XK_F9,				spawn,	SHCMD("betterlockscreen -l blur")},
-
+	{ 0,			XK_F9,			spawn,	SHCMD("betterlockscreen -l blur")},
+	{ 0,			XK_Print,		spawn,	SHCMD("~/.local/bin/screenshot fullsave")},
+	{ MODKEY|ShiftMask,		XK_s,		spawn,	SHCMD("~/.local/bin/screenshot selectsave")},
 	{ MODKEY|ShiftMask,             XK_q,      			quit,           {0} },
 	{ MODKEY,			XK_r,      quit,           {1} }, 
 };
